@@ -12,7 +12,7 @@ Input: 123456789 Output: 987654321
 
 
 def descending_order(num):
-    pass
+    return int("".join(sorted(str(num), reverse=True)))
 
 
 @pytest.mark.parametrize(
