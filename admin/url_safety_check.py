@@ -1,48 +1,53 @@
 #!/usr/bin/env python3
-"""Check whether URLs are safe public HTTPS links before publishing them.
+"""Validate public HTTPS links before an automation publishes them.
 
-Why: automation often collects links from files, CMS exports or generated material.
-This tiny checker rejects local/technical links such as sandbox:, file:, localhost and
-127.0.0.1 before they accidentally reach a public page.
+Useful when links come from CMS exports, generated material or automation output.
+It rejects local/technical URLs and can optionally require a specific website.
 
 Examples:
     python url_safety_check.py https://example.com/page
+    python url_safety_check.py --host kahoot.com https://create.kahoot.com/share/example
     python url_safety_check.py https://example.com file:///C:/secret.txt
 
-Exit code is 0 when every URL passes, 1 when at least one is rejected.
-No third-party packages are required.
+Exit code: 0 = every URL passed, 1 = at least one rejected, 2 = bad usage.
+The check is local: it validates URL structure but does not open the website.
 """
 
-import sys
+import argparse
 from urllib.parse import urlparse
 
 BLOCKED = ("sandbox:", "file:", "connector", "localhost", "127.0.0.1")
 
 
-def check(url: str) -> tuple[bool, str]:
-    """Return (allowed, reason) without opening the URL."""
+def check(url: str, expected_host: str | None = None) -> tuple[bool, str]:
     value = url.strip()
     if not value.startswith("https://"):
         return False, "HTTPS required"
     if any(marker in value.lower() for marker in BLOCKED):
         return False, "local or technical URL"
-    if not urlparse(value).netloc:
+    host = (urlparse(value).hostname or "").lower()
+    if not host:
         return False, "missing hostname"
+    if expected_host:
+        wanted = expected_host.lower().strip()
+        if host != wanted and not host.endswith("." + wanted):
+            return False, f"expected host {wanted}"
     return True, "OK"
 
 
-def main(urls: list[str]) -> int:
-    if not urls:
-        print("Usage: python url_safety_check.py URL [URL ...]")
-        return 2
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("urls", nargs="+", help="URLs to validate")
+    parser.add_argument("--host", help="optional expected domain, e.g. kahoot.com")
+    args = parser.parse_args()
 
     failed = False
-    for url in urls:
-        allowed, reason = check(url)
+    for url in args.urls:
+        allowed, reason = check(url, args.host)
         print(f"{'OK' if allowed else 'REJECT'}: {url} ({reason})")
         failed |= not allowed
     return int(failed)
 
 
 if __name__ == "__main__":
-    raise SystemExit(main(sys.argv[1:]))
+    raise SystemExit(main())
