@@ -4,7 +4,7 @@ Status legend: **done-in-chat** = already studied and waiting to be converted in
 
 ## Active Directory / Group Policy
 
-1. FSMO roles — **done-in-chat**
+1. FSMO roles — **published**
 2. AD Sites, Subnets and replication — **done-in-chat**
 3. AD-integrated DNS — **done-in-chat**
 4. SRV records and DC Locator — **done-in-chat**
