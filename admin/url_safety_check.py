@@ -9,6 +9,7 @@ Examples:
     python url_safety_check.py --host kahoot.com https://create.kahoot.com/share/example
     type links.txt | python url_safety_check.py
     type links.txt | python url_safety_check.py --json
+    python url_safety_check.py --quiet https://example.com/page
 
 Exit code: 0 = every URL passed, 1 = at least one rejected, 2 = bad usage.
 The check is local: it validates URL structure but does not open the website.
@@ -43,6 +44,7 @@ def main() -> int:
     parser.add_argument("urls", nargs="*", help="URLs to validate; stdin is used if omitted")
     parser.add_argument("--host", help="optional expected domain, e.g. kahoot.com")
     parser.add_argument("--json", action="store_true", help="emit machine-readable JSON lines")
+    parser.add_argument("--quiet", action="store_true", help="print only rejected URLs")
     args = parser.parse_args()
 
     urls = args.urls or [line.strip() for line in sys.stdin if line.strip()]
@@ -52,6 +54,8 @@ def main() -> int:
     failed = False
     for url in urls:
         allowed, reason = check(url, args.host)
+        if args.quiet and allowed:
+            continue
         if args.json:
             print(json.dumps({"url": url, "allowed": allowed, "reason": reason}))
         else:
