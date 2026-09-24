@@ -28,9 +28,3 @@ All examples are anonymized. Use only neutral lab values such as:
 - users: `student01`, `admin01`
 
 Do not publish real names, domains, hostnames, IP addresses, VLANs, e-mail addresses, credentials, tenant IDs, firewall rules, or reconstructable production topology.
-
-## Publishing cadence
-
-The backlog is intentionally released in small daily portions. Existing study material is preferred over generated filler.
-
-See [TOPIC_QUEUE.md](TOPIC_QUEUE.md).
