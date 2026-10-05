@@ -6,3 +6,4 @@ This file tracks the technical-material publishing queue.
 | --- | --- | --- | --- |
 | 2026-09-14 | 1. argparse basics | `argparse/01-basics/` | Parser creation, positional and optional arguments, help, defaults, boolean flags, and simple validation. |
 | 2026-09-25 | 2. argparse validation | `argparse/02-validation/` | Types, choices, required options, defaults, custom validation, and pathlib-based file arguments. |
+| 2026-10-05 | AZ-802 PowerShell Remoting | `AZ-802-Drill/02-powershell-remoting-invoke-command.md` | WinRM, Invoke-Command, permissions, Kerberos, TrustedHosts, firewall and double-hop. |
