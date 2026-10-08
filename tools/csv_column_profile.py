@@ -25,6 +25,16 @@ Expected behavior:
 - reports row_count=3
 - reports non_empty, blank, unique, numeric, min_length, max_length per column
 - never prints the original cell values
+
+Exact expected stdout for the input above (tab-separated columns):
+```text
+row_count=3
+column	non_empty	blank	unique	numeric	min_length	max_length
+id	3	0	3	0	3	3
+age	2	1	2	2	2	2
+city	2	1	2	0	5	5
+```
+Exit code: 0. No input cell value is printed.
 """
 from __future__ import annotations
 import argparse,csv,sys,tempfile
