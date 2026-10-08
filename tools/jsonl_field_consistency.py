@@ -24,6 +24,16 @@ Expected behavior:
 - reports records=3
 - reports id present on 3 lines and name on 2
 - with --required name, reports line 2 as missing and exits 2
+
+Exact expected stdout for `python jsonl_field_consistency.py events.jsonl --required name`:
+```text
+records=3
+field	present	missing
+id	3	0
+name	2	1
+missing_required=name; lines=2
+```
+Exit code: 2. Without `--required name`, omit the last line and exit with code 0.
 """
 from __future__ import annotations
 import argparse,json,sys,tempfile
