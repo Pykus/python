@@ -21,6 +21,17 @@ Expected behavior:
 - classifies them into 0-7d, 31-90d, and >365d buckets
 - reports file counts and bytes per bucket
 - does not change timestamps or file contents
+
+Exact expected stdout for three 10-byte files modified 3, 40, and 400 days before the supplied `--now` reference:
+```text
+bucket	files	bytes
+0-7d	1	10
+8-30d	0	0
+31-90d	1	10
+91-365d	0	0
+>365d	1	10
+```
+Exit code: 0. These totals assume no other files in the example directory.
 """
 from __future__ import annotations
 import argparse,datetime as dt,os,sys,tempfile
