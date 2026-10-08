@@ -21,6 +21,15 @@ Expected behavior:
 - reports one empty file
 - optionally reports one empty directory
 - exits 2 when empty files or requested empty directories are found
+
+Exact expected stdout for the example directory, when run with `--include-empty-dirs`:
+```text
+empty_files=1
+empty_dirs=1
+empty_file=placeholder.txt
+empty_dir=empty
+```
+Exit code: 2. Without `--include-empty-dirs`, `empty_dirs=0` and the `empty_dir=empty` line is omitted.
 """
 from __future__ import annotations
 import argparse,sys,tempfile
