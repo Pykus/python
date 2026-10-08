@@ -21,6 +21,21 @@ Expected behavior:
 - classifies UTF-8 and UTF-8-BOM separately
 - reports binary-looking files without decoding them
 - exits 2 when undecodable text-like files are found
+
+For a reproducible example, create `utf8.txt` containing UTF-8 text, `bom.txt` containing a UTF-8 BOM followed by text, and `invalid.txt` containing byte 0xFF. Run `python text_encoding_audit.py sample --extensions .txt`.
+
+Exact expected stdout:
+```text
+files=3
+utf8=1
+utf8-bom=1
+invalid=1
+binary=0
+utf8-bom	bom.txt
+invalid	invalid.txt
+utf8	utf8.txt
+```
+Exit code: 2. The tool sorts filenames and does not print file contents. Note that a file containing NUL bytes would be reported as `binary`.
 """
 from __future__ import annotations
 import argparse,sys,tempfile
